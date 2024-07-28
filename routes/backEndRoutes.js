@@ -193,7 +193,7 @@ router.post("/auth/signup",async(req,res)=>{
         const token = await createtoken(user._id,user.Role)
         res.cookie("jwt",token,{httpOnly:true,maxAge:maxAge*1000})
         mailVerifier(req.body.email,req.body.name)
-        res.status(201).json({id:user._id})
+        res.status(201).json({id:user._id,token})
       }
       //taking care of the errors
       catch(err){
@@ -218,7 +218,7 @@ router.post("/auth/login",async(req,res)=>{
         //creating token for authenticaton
         const token = await createtoken(user._id,user.Role)
         res.cookie("jwt",token,{httpOnly:true,maxAge:maxAge*1000})
-        res.status(201).json({id:user._id})
+        res.status(201).json({id:user._id,token})
      }  
 
     //taking care of the errors
