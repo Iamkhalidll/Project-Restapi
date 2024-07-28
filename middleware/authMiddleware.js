@@ -4,7 +4,8 @@ dotenv.config()
 //middleware function to check authorizaion
 const requireAuth = (req,res,next)=>{
     try{
-         const token = req.cookies.jwt
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
         if(token){
             let decodedToken=  jwt.verify(token,process.env.ACCESS_TOKEN);
             let user = decodedToken
