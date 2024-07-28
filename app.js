@@ -21,9 +21,9 @@ async function connect(){
 }
 // This is used to ensure we can get info from the cookies
 let cookieparser=("cookie-parser")
-app.use(cors({origin:"*"})) 
+app.use(cors({origin:"*"}))
 //These are middlewares
-app.use(cookieParser())
+app.use(cookieparser())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 import backEndRoutes from "./routes/backEndRoutes.js"
