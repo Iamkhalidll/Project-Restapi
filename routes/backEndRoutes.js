@@ -10,9 +10,8 @@ import requireAuth from '../middleware/authMiddleware.js';
 import Parcel from "../parcelUtils/parcelSchema.js";
 import {mailer,mailVerifier} from "../userUtils/mailer.js";
 //route for creating and adding parcel to the database
-router.post("/parcel",requireAuth,async(req,res)=>{
+router.post("/parcel",requireAuth,parcelCreationSchemaValidator,async(req,res)=>{
   try{
-    await parcelCreationSchemaValidator.validateAsync(req.body)
     let {packageName,destination,description,presentLocation} = req.body
     let parcel = await Parcel.create({
         packageName,
@@ -27,7 +26,6 @@ router.post("/parcel",requireAuth,async(req,res)=>{
   }
   //taking care of the error
   catch(err){
-    console.log({err:err.message})
     res.status(400).json({err:err.message})
   }
 })
@@ -176,11 +174,8 @@ router.put("/parcels/:id/status",requireAuth,async (req,res)=>{
 
 
 //route for signing up
-router.post("/auth/signup",async(req,res)=>{
+router.post("/auth/signup",signupSchemaValidator,async(req,res)=>{
       try{
-        //making sure the req.body meets requirements
-        await signupSchemaValidator.validateAsync(req.body)
-
         //checking if email exists
         let {email} = req.body
         const emailexist = await User.findOne({email})
@@ -202,10 +197,8 @@ router.post("/auth/signup",async(req,res)=>{
           console.log({err:err.message})
       }
 })
-router.post("/auth/login",async(req,res)=>{
+router.post("/auth/login",loginSchemaValidator,async(req,res)=>{
     try{
-        //check if req.body meets requirements
-        await loginSchemaValidator.validateAsync(req.body)
         const {email ,password} = req.body
 
         //email verification
